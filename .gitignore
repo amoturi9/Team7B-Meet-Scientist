@@ -1,1 +1,5 @@
 *.txt
+
+# Local build output and macOS files
+/build/
+.DS_Store
