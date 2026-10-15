@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Create your Meet a Scientist scholar profile and connect with STEM-minded people.">
+  <title>Create Your Profile | Meet a Scientist</title>
+  <link rel="stylesheet" href="s-create.css">
+  <script src="s-create.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Meet a Scientist home">
+      <span class="brand-mark" aria-hidden="true">✳</span>
+      <span>Meet a Scientist</span>
+    </a>
+    <span class="header-note">Connect. Collaborate. Discover.</span>
+  </header>
+
+  <main class="page-shell">
+    <section class="intro">
+      <p class="eyebrow">YOUR STEM COMMUNITY STARTS HERE</p>
+      <h1>Create your scholar profile</h1>
+      <p>Share what you know, what you're curious about, and the people you'd like to meet.</p>
+    </section>
+
+    <div class="content-grid">
+      <section class="form-card" aria-labelledby="form-title">
+        <div class="section-heading">
+          <div>
+            <p class="step-label">PROFILE SETUP</p>
+            <h2 id="form-title">Tell us about yourself</h2>
+          </div>
+          <span class="required-note">* Required</span>
+        </div>
+
+        <form id="profile-form">
+          <div class="form-grid">
+            <div class="field full-width">
+              <label for="fullName">Full name <span>*</span></label>
+              <input id="fullName" name="fullName" type="text" autocomplete="name" placeholder="e.g. Alex Johnson" required maxlength="80">
+            </div>
+
+            <div class="field">
+              <label for="school">School or university <span>*</span></label>
+              <input id="school" name="school" type="text" placeholder="e.g. North Texas University" required maxlength="120">
+            </div>
+
+            <div class="field">
+              <label for="academicYear">Academic year <span>*</span></label>
+              <select id="academicYear" name="academicYear" required>
+                <option value="">Choose your year</option>
+                <option>High school</option>
+                <option>Freshman</option>
+                <option>Sophomore</option>
+                <option>Junior</option>
+                <option>Senior</option>
+                <option>Graduate student</option>
+                <option>Doctoral student</option>
+                <option>Faculty / researcher</option>
+                <option>Other</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="major">Major or field of study <span>*</span></label>
+              <input id="major" name="major" type="text" placeholder="e.g. Computer Science" required maxlength="100">
+            </div>
+
+            <div class="field">
+              <label for="location">City or campus area</label>
+              <input id="location" name="location" type="text" placeholder="e.g. Denton, TX" maxlength="100">
+              <small>Keep your exact home address private.</small>
+            </div>
+
+            <div class="field full-width">
+              <label for="bio">About me</label>
+              <textarea id="bio" name="bio" rows="4" maxlength="500" placeholder="Tell people about your interests, projects, experience, or what you enjoy learning."></textarea>
+              <small><span id="bio-count">0</span>/500 characters</small>
+            </div>
+          </div>
+
+          <fieldset class="choice-section">
+            <legend>Which STEM subjects are your strengths?</legend>
+            <p class="helper-text">Select every subject that fits and choose a level for each one.</p>
+            <div id="subjects-list" class="subjects-grid"></div>
+          </fieldset>
+
+          <fieldset class="choice-section">
+            <legend>What would you like to find?</legend>
+            <p class="helper-text">Choose the types of connections you're interested in.</p>
+            <div class="goals-grid">
+              <label class="check-option"><input type="checkbox" name="goals" value="Study partner"><span>Study partner</span></label>
+              <label class="check-option"><input type="checkbox" name="goals" value="Mentor"><span>Mentor</span></label>
+              <label class="check-option"><input type="checkbox" name="goals" value="Research opportunities"><span>Research opportunities</span></label>
+              <label class="check-option"><input type="checkbox" name="goals" value="Project collaborator"><span>Project collaborator</span></label>
+              <label class="check-option"><input type="checkbox" name="goals" value="Teach or tutor others"><span>Teach or tutor others</span></label>
+              <label class="check-option"><input type="checkbox" name="goals" value="STEM friends"><span>Meet STEM friends</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="choice-section">
+            <legend>How would you prefer to connect?</legend>
+            <div class="radio-row">
+              <label class="radio-option"><input type="radio" name="connectionMode" value="In person" checked><span>In person</span></label>
+              <label class="radio-option"><input type="radio" name="connectionMode" value="Online"><span>Online</span></label>
+              <label class="radio-option"><input type="radio" name="connectionMode" value="Both"><span>Both</span></label>
+            </div>
+          </fieldset>
+
+          <div id="form-message" class="form-message" role="status" aria-live="polite"></div>
+          <div class="form-actions">
+            <button class="button button-secondary" type="button" id="reset-button">Clear form</button>
+            <button class="button button-primary" type="submit">Save my profile <span aria-hidden="true">→</span></button>
+          </div>
+          <p class="privacy-note">Prototype note: this version saves profile information only in this browser. It is not yet visible to other users.</p>
+        </form>
+      </section>
+
+      <aside class="preview-card" aria-labelledby="preview-title">
+        <div class="preview-top">
+          <span class="preview-badge">LIVE PREVIEW</span>
+          <div class="avatar" id="preview-avatar" aria-hidden="true">?</div>
+          <h2 id="preview-name">Your name</h2>
+          <p id="preview-major" class="preview-major">Your major or field of study</p>
+          <p id="preview-school" class="preview-school">Your school · Academic year</p>
+        </div>
+        <div class="preview-body">
+          <div class="preview-block">
+            <h3>About</h3>
+            <p id="preview-bio" class="muted">Your introduction will show up here as you type.</p>
+          </div>
+          <div class="preview-block">
+            <h3>STEM strengths</h3>
+            <div id="preview-subjects" class="tag-list"><span class="empty-tag">Choose your subjects</span></div>
+          </div>
+          <div class="preview-block">
+            <h3>Looking for</h3>
+            <div id="preview-goals" class="tag-list"><span class="empty-tag">Choose your goals</span></div>
+          </div>
+          <div class="preview-footer">
+            <span aria-hidden="true">⌖</span>
+            <span id="preview-location">Location not added</span>
+            <span class="dot">•</span>
+            <span id="preview-mode">In person</span>
+          </div>
+        </div>
+        <div id="saved-indicator" class="saved-indicator" hidden>✓ Profile saved in this browser</div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>Meet a Scientist · Find your people. Build something brilliant.</p>
+  </footer>
+</body>
+</html>
