@@ -43,6 +43,7 @@ Keep the terminal running. Press Control+C to stop the server.
 ## Local pages
 
 - Home: http://localhost:8080/
+- Scholar profile form: http://localhost:8080/s-create.html
 - Backend health endpoint: http://localhost:8080/api/health
 - Connection test: http://localhost:8080/connection-test.html
 
@@ -62,8 +63,10 @@ C++ changes require stopping, recompiling, and restarting the server.
 ## Current scope
 
 The local frontend/backend connection has been verified on macOS.
-This setup does not yet implement accounts, a database, profiles,
-search, meeting requests, messaging, or reviews.
+The homepage and scholar profile form are available. The form supports a live
+preview and saves a profile in browser localStorage, not in the C++ backend
+or a shared database. Accounts, database storage, search, meeting requests,
+messaging, and reviews are not implemented yet.
 
 ## Third-party dependency
 
