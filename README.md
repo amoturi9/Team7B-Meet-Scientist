@@ -25,18 +25,15 @@ If developer tools are missing, run:
 xcode-select --install
 ```
 
-From the repository root, compile:
+In VS Code, choose **Terminal → New Terminal**. From the project folder, run:
 
 ```bash
-mkdir -p build
-clang++ -std=c++17 -pthread -Ibackend/include backend/src/main.cpp -o build/server
+brew install libsodium
+bash scripts/start.sh
 ```
 
-Start the server from the repository root:
-
-```bash
-./build/server
-```
+The first command is only needed once. The second compiles and starts the server.
+Open http://localhost:8080/signup.html in your browser.
 
 Keep the terminal running. Press Control+C to stop the server.
 
@@ -60,15 +57,58 @@ Expected result: "Success: C++ backend is running!"
 HTML and JavaScript changes require a browser refresh.
 C++ changes require stopping, recompiling, and restarting the server.
 
-## Current scope
+## Signup and login walkthrough
 
-The local frontend/backend connection has been verified on macOS.
-The homepage and scholar profile form are available. The form supports a live
-preview and saves a profile in browser localStorage, not in the C++ backend
-or a shared database. Accounts, database storage, search, meeting requests,
-messaging, and reviews are not implemented yet.
+1. Open `/signup.html`, enter a name, email, teacher/scientist account type, and a long password.
+2. After creating the account, log in at `/login.html`.
+3. `/account.html` shows your saved name, email, and account type.
+4. Log out, stop and restart the server, and log in again with the same details.
+
+Accounts are stored in `data/accounts.db`, a SQLite database created automatically.
+Keep this file to preserve accounts. It is private and excluded from Git, so each
+teammate has their own local accounts. Passwords are stored as salted Argon2id hashes
+using libsodium; readable passwords are never written to the database.
+Sessions expire after 24 hours and logout revokes the current session.
+
+## How the new code fits together
+
+- `frontend/signup.html` and `frontend/login.html`: the forms people fill out.
+- `frontend/auth.js`: sends form data to the C++ server and displays errors.
+- `frontend/account.html`: displays the currently signed-in account.
+- `frontend/auth.css`: styling for these three pages.
+- `backend/src/main.cpp`: validates input, hashes/checks passwords, reads/writes SQLite,
+  and manages login sessions in HttpOnly cookies.
+- `scripts/start.sh`: compiles and starts the application with its libraries.
+- `tests/auth_test.py`: checks the account flow using a separate temporary database.
+
+API routes: `POST /api/signup`, `POST /api/login`, `GET /api/me`, and `POST /api/logout`.
+POST requests use URL-encoded form data and an `X-Requested-With: MeetScientist` header.
+Responses are plain text except `/api/me` and `/api/health`, which return JSON.
+Teacher/scientist roles are self-selected labels, not verified professional status.
+
+## Current scope and deployment limits
+
+This is a local development implementation. It binds only to your computer and
+allows localhost on port 8080. Public hosting still needs HTTPS, Secure cookies,
+a configured trusted hostname, persistent disk storage and backups, and a reviewed
+rate-limit strategy. The current limit is shared across the local demo: 30 signup/login
+attempts per minute. Account recovery and email verification are not implemented.
+
+The existing scholar profile form still saves in browser localStorage. It is not
+linked to login accounts yet. Shared profiles, search, meeting requests, messaging,
+and reviews remain unimplemented. Logging in does not make that old form private.
+
+To run integration tests, stop the development server first, then run:
+
+```bash
+python3 tests/auth_test.py
+```
+
+Tests start a temporary server on port 8080 and never change your normal database.
 
 ## Third-party dependency
 
 cpp-httplib v0.27.0 is bundled in backend/include/.
 Its license is included as cpp-httplib-LICENSE.
+
+SQLite is provided by the macOS developer tools; libsodium is installed through Homebrew.

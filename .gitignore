@@ -3,3 +3,6 @@
 # Local build output and macOS files
 /build/
 .DS_Store
+
+# Private account database and local sessions
+/data/
