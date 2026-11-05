@@ -112,3 +112,11 @@ cpp-httplib v0.27.0 is bundled in backend/include/.
 Its license is included as cpp-httplib-LICENSE.
 
 SQLite is provided by the macOS developer tools; libsodium is installed through Homebrew.
+
+## November team integration
+
+Merged the remote Aidan, Keon, and workspace-setup history. Aidan's updated homepage,
+basic/scholar profile editors, photo upload previews, and login styling are retained.
+The login page now calls the persistent C++ account API. Password fields were removed
+from the browser-only profile editors; use signup.html to create a login account.
+Profile editor data remains browser-local and is not yet tied to authenticated users.

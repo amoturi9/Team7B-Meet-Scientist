@@ -21,6 +21,9 @@ const message = document.querySelector("#form-message");
 const savedIndicator = document.querySelector("#saved-indicator");
 const bioInput = document.querySelector("#bio");
 const bioCount = document.querySelector("#bio-count");
+const profilePictureInput = document.querySelector("#profile-picture");
+let profilePicture = "";
+
 
 const fields = {
   fullName: document.querySelector("#fullName"),
@@ -28,7 +31,8 @@ const fields = {
   academicYear: document.querySelector("#academicYear"),
   major: document.querySelector("#major"),
   location: document.querySelector("#location"),
-  bio: bioInput
+  bio: bioInput,
+  email: document.querySelector("#email"),
 };
 
 function makeSubjectOptions() {
@@ -96,11 +100,13 @@ function selectedConnectionMode() {
 function getProfileFromForm() {
   return {
     fullName: fields.fullName.value.trim(),
+    email: fields.email.value.trim(),
     school: fields.school.value.trim(),
     academicYear: fields.academicYear.value,
     major: fields.major.value.trim(),
     location: fields.location.value.trim(),
     bio: fields.bio.value.trim(),
+    profilePicture: profilePicture,
     subjects: selectedSubjects(),
     goals: selectedGoals(),
     connectionMode: selectedConnectionMode(),
@@ -127,9 +133,18 @@ function updatePreview() {
   const profile = getProfileFromForm();
 
   document.querySelector("#preview-name").textContent = profile.fullName || "Your name";
-  document.querySelector("#preview-avatar").textContent = profile.fullName
-    ? profile.fullName.charAt(0).toUpperCase()
-    : "?";
+  const avatar = document.querySelector("#preview-avatar");
+  if (profile.profilePicture) {
+    avatar.textContent = "";
+    avatar.style.backgroundImage = `url("${profile.profilePicture}")`;
+    avatar.style.backgroundSize = "cover";
+    avatar.style.backgroundPosition = "center";
+  } else {
+    avatar.style.backgroundImage = "none";
+    avatar.textContent = profile.fullName
+      ? profile.fullName.charAt(0).toUpperCase()
+      : "?";
+  }
   document.querySelector("#preview-major").textContent = profile.major || "Your major or field of study";
   document.querySelector("#preview-school").textContent =
     `${profile.school || "Your school"} · ${profile.academicYear || "Academic year"}`;
@@ -184,11 +199,13 @@ function loadProfile() {
   if (!savedProfile || typeof savedProfile !== "object") return;
 
   fields.fullName.value = savedProfile.fullName || "";
+  fields.email.value = savedProfile.email || "";
   fields.school.value = savedProfile.school || "";
   fields.academicYear.value = savedProfile.academicYear || "";
   fields.major.value = savedProfile.major || "";
   fields.location.value = savedProfile.location || "";
   fields.bio.value = savedProfile.bio || "";
+  profilePicture = savedProfile.profilePicture || "";
 
   const savedSubjects = Array.isArray(savedProfile.subjects) ? savedProfile.subjects : [];
   subjectsList.querySelectorAll(".subject-option").forEach((item) => {
@@ -247,6 +264,8 @@ document.querySelector("#reset-button").addEventListener("click", () => {
     item.querySelector('input[type="checkbox"]').checked = false;
     item.querySelector("select").value = "Intermediate";
   });
+  profilePicture = "";
+  profilePictureInput.value = "";
 
   try {
     localStorage.removeItem(STORAGE_KEY);
@@ -256,6 +275,37 @@ document.querySelector("#reset-button").addEventListener("click", () => {
 
   updatePreview();
   showMessage("The form has been cleared.", "success");
+});
+
+profilePictureInput.addEventListener("change", () => {
+  const file = profilePictureInput.files[0];
+
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    showMessage("Please upload a valid file.", "error");
+    profilePictureInput.value = "";
+    return;
+  }
+
+  if (file.size > 1024 * 1024) {
+    showMessage("File must be smaller than 1 MB.", "error");
+    profilePictureInput.value = "";
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    profilePicture = reader.result;
+    updatePreview();
+  };
+
+  reader.onerror = () => {
+    showMessage("Could not load the selected file.", "error");
+  };
+
+  reader.readAsDataURL(file);
 });
 
 makeSubjectOptions();

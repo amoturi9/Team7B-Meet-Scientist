@@ -1,2 +1,51 @@
-<!doctype html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Log in | Meet a Scientist</title><link rel="stylesheet" href="/auth.css"><script src="/auth.js" defer></script></head><body><header><a href="/">Meet a Scientist</a><a href="/account.html">My account</a></header><main><h1>Welcome back</h1><p>Log in to your saved account.</p><form data-action="login"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="username" maxlength="254" required><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" maxlength="128" required><button>Log in</button><p id="message" class="message" role="status" aria-live="polite"></p></form><p>New here? <a href="/signup.html">Create an account</a></p></main></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="login.css">
+    <script src="auth.js" defer></script>
+</head>
+<body>
+    <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Meet a Scientist home">
+      <span class="brand-mark" aria-hidden="true">✳</span>
+      <span>Meet a Scientist</span>
+    </a>
+    <span class="header-note">Connect. Collaborate. Discover.</span>
+  </header>
+
+  <div class="sorting">
+    <div class="login-box">
+        <h1>Login to your Account</h1>
+            <form id="login-form" data-action="login">
+                <div class="form-group">
+                    <label for="email">Email Address:</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email address"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        required
+                    >
+                </div>
+
+                <button type="submit">Login</button>
+            <p id="message" role="status" aria-live="polite"></p><p>New here? <a href="signup.html">Create an account</a></p></form>
+    </div>
+  </div>
+
+</body>
+</html>
